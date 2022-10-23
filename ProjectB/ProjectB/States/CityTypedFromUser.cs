@@ -34,6 +34,7 @@ public class CityTypedFromUser : IState
 
     public async Task BotSendMessage(ITelegramBotClient botClient, long chatId, string cityName)
     {
+        cityName = cityName.Split(" ").Count() > 1 ? cityName = cityName.Split(" ")[0] : cityName;
         if (cityName == "Show HotelInfo")
         {
             cityName = _hotelCache.Get(chatId.ToString());
@@ -45,8 +46,8 @@ public class CityTypedFromUser : IState
         {
             var button = new[]
             {
-                    InlineKeyboardButton.WithCallbackData(hotel.HotelName,hotel.Id.ToString())
-                };
+                    InlineKeyboardButton.WithCallbackData(hotel.HotelName,$"{hotel.Id} {State.CheckInState}")
+            };
             buttons.Add(button);
         }
 

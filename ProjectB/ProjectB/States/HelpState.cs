@@ -17,7 +17,7 @@ public class HelpState : IState
         {
             new []
             {
-                InlineKeyboardButton.WithCallbackData("Back","Back"),
+                InlineKeyboardButton.WithCallbackData("Back",State.MainState.ToString()),
             },
         });
         var message = new Message();

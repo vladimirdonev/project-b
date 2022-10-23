@@ -21,7 +21,7 @@ public class CheckOutState : IState
             choosedate = choosedate.AddDays(dayscount);
             var button = new[]
             {
-                InlineKeyboardButton.WithCallbackData(choosedate.ToString("yyyy-MM-dd"),choosedate.ToString("yyyy-MM-dd"))
+                InlineKeyboardButton.WithCallbackData(choosedate.ToString("yyyy-MM-dd"),$"{choosedate.ToString("yyyy-MM-dd")} {State.CheckOutSelectState}")
             };
 
             buttons.Add(button);

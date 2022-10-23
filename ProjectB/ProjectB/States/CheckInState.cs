@@ -21,7 +21,7 @@ public class CheckInState : IState
                 // first row
                 new []
                 {
-                    InlineKeyboardButton.WithCallbackData(choosedate.ToString("yyyy-MM-dd"), choosedate.ToString("yyyy-MM-dd")),
+                    InlineKeyboardButton.WithCallbackData(choosedate.ToString("yyyy-MM-dd"), $"{choosedate.ToString("yyyy-MM-dd")} {State.CheckInSelectState}"),
                 }
         });
         message.Text = "Choose checkin date";

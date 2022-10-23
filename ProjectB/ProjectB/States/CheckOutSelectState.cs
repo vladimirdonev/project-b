@@ -13,7 +13,7 @@ public class CheckOutSelectState : IState
     {
         var userInformation = new UserInformation();
         userInformation.Id = callbackQuery.Message.Chat.Id.ToString();
-        userInformation.CheckOutDate = callbackQuery.Data.ToString();
+        userInformation.CheckOutDate = callbackQuery.Data.Split(" ")[0];
         await _cosmosDbService.AddCheckOutDateAsync(userInformation);
         await BotSendMessage(botClient, callbackQuery.Message.Chat.Id);
         return State.CheckOutSelectState;
@@ -29,7 +29,7 @@ public class CheckOutSelectState : IState
                 // first row
                 new []
                 {
-                    InlineKeyboardButton.WithCallbackData("Show HotelInfo"),
+                    InlineKeyboardButton.WithCallbackData("Show HotelInfo",State.HotelInfoState.ToString()),
                 }
         });
 

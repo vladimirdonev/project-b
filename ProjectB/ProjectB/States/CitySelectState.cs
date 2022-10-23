@@ -30,7 +30,7 @@ public class CitySelectState : IState
             {
                 var button = new[]
                 {
-                InlineKeyboardButton.WithCallbackData(item,item)
+                InlineKeyboardButton.WithCallbackData(item,$"{item} {State.CityTypedFromUserState}")
                 };
                 buttons.Add(button);
             }
@@ -41,7 +41,7 @@ public class CitySelectState : IState
         }
         else
         {
-            await botClient.SendTextMessageAsync(chatId, "Please Type The City You Wont To Visit");
+            await botClient.SendTextMessageAsync(chatId, "Please Type Or Choose The City You Wont To Visit");
         }
     }
 }

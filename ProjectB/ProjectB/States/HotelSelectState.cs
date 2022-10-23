@@ -29,7 +29,7 @@ public class HotelSelectState : IState
                 // first row
                 new []
                 {
-                    InlineKeyboardButton.WithCallbackData("Show CheckIn Date"),
+                    InlineKeyboardButton.WithCallbackData("Show CheckIn Date", State.CheckInState.ToString()),
                 }
         });
 
