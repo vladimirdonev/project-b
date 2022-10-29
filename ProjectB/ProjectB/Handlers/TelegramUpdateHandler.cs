@@ -25,23 +25,23 @@ namespace ProjectB.Handlers
             {
                 if (update.Message.Text.ToString().ToLower() == "/start")
                 {
-                   HandleCommunication(botClient, update, _statefactory.GetState(State.MainState));
+                  await HandleCommunication(botClient, update, _statefactory.GetState(State.MainState));
                 }
                 else
                 {
-                    HandleCommunication(botClient, update, _statefactory.GetState(State.CityTypedFromUserState));
+                  await HandleCommunication(botClient, update, _statefactory.GetState(State.CityTypedFromUserState));
                 }
             }
             else if (update.Type == UpdateType.CallbackQuery)
             {
                 var currentState = update.CallbackQuery.Data.Split(" ").Count() == 1 ? (State)Enum.Parse(typeof(State), update.CallbackQuery.Data) : 
                     (State)Enum.Parse(typeof(State), update.CallbackQuery.Data.Split(" ")[1]);
-                HandleCommunication(botClient, update, _statefactory.GetState(currentState));
+                await HandleCommunication(botClient, update, _statefactory.GetState(currentState));
             }
             
         }
 
-        private async void HandleCommunication(ITelegramBotClient botClient, Update update, IState state)
+        private async Task HandleCommunication(ITelegramBotClient botClient, Update update, IState state)
         {
 
             try
@@ -56,7 +56,7 @@ namespace ProjectB.Handlers
             catch (Exception ex)
             {
                 await botClient.SendTextMessageAsync(await GetChatId(update), ex.Message);
-                RepeatState(ex, botClient, update);
+                await RepeatState(ex, botClient, update);
             }
         }
 
@@ -67,8 +67,6 @@ namespace ProjectB.Handlers
                 ApiRequestException apiRequestException => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
                 _ => exception.ToString()
             };
-
-            Console.WriteLine(ErrorMessage);
 
             return Task.CompletedTask;
         }
@@ -85,15 +83,15 @@ namespace ProjectB.Handlers
             return update.Message != null ? update.Message.Chat.Id : update.CallbackQuery.Message.Chat.Id;
         }
 
-        private async void RepeatState(Exception ex, ITelegramBotClient botClient, Update update)
+        private async Task RepeatState(Exception ex, ITelegramBotClient botClient, Update update)
         {
             if (ex.StackTrace.Contains("GetDestinationIdAsync"))
             {
-                HandleCommunication(botClient, update, _statefactory.GetState(State.CitySelectState));
+                await HandleCommunication(botClient, update, _statefactory.GetState(State.CitySelectState));
             }
             else if (ex.StackTrace.Contains("HotelInfoState"))
             {
-               HandleCommunication(botClient, update, _statefactory.GetState(State.CityTypedFromUserState));
+              await HandleCommunication(botClient, update, _statefactory.GetState(State.CityTypedFromUserState));
             }
 
         }

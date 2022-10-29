@@ -4,23 +4,23 @@ namespace ProjectB.Services;
 
 public class HotelService : IHotelService
 {
-    private IHotelClients hotelClients;
-    private IMapper mapper;
+    private IHotelClients _hotelClients;
+    private IMapper _mapper;
     private readonly ICacheFilter<HotelOverview> _hotelOverviewCache;
     private readonly IValidator _validator;
 
     public HotelService(IHotelClients hotelClients, IMapper mapper, 
         ICacheFilter<HotelOverview> hotelOverviewCache, IValidator validator)
     {
-        this.hotelClients = hotelClients;
-        this.mapper = mapper;
+        _hotelClients = hotelClients;
+        _mapper = mapper;
         _hotelOverviewCache = hotelOverviewCache;
         _validator = validator;
     }
 
     public async Task<ICollection<HotelsViewModel>> GetDestinationIdAsync(string cityName)
     {
-        var destination = await this.hotelClients.GetDestination(cityName);
+        var destination = await _hotelClients.GetDestination(cityName);
 
 
         var destinationId = int.MinValue;
@@ -45,13 +45,13 @@ public class HotelService : IHotelService
 
     public async Task<ICollection<HotelsViewModel>> GetHotelsByDestinationIdAsync(int id)
     {
-        var hotels = await this.hotelClients.GetHotels(id);
+        var hotels = await this._hotelClients.GetHotels(id);
         var hotelsViewModel = new List<HotelsViewModel>();
 
         foreach (var item in hotels.Data.Body.SearchResults.Results)
         {
             var hotel = new HotelsViewModel();
-            hotel = this.mapper.Map<HotelByCity, HotelsViewModel>(item);
+            hotel = _mapper.Map<HotelByCity, HotelsViewModel>(item);
             hotelsViewModel.Add(hotel);
         }
 
@@ -66,10 +66,10 @@ public class HotelService : IHotelService
 
         if (hotelDetails == null)
         {
-            hotelDetails = await hotelClients.GetHotel(id, checkIn, checkOut);
+            hotelDetails = await _hotelClients.GetHotel(id, checkIn, checkOut);
             _hotelOverviewCache.Set(cacheKey, hotelDetails);
         }
-        Hotel = this.mapper.Map(hotelDetails.HotelDetails.Hotel, Hotel);
+        Hotel = _mapper.Map(hotelDetails.HotelDetails.Hotel, Hotel);
         var services = hotelDetails.HotelDetails.Hotel.Amenities
                 .SelectMany(x => x.HotelService.Where(x => x.Heading == "Services")).ToArray();
         foreach (var item in services)
