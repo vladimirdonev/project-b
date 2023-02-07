@@ -2,7 +2,7 @@
 
 namespace ProjectB.HostedServices
 {
-    public class TelegramBotHostedService : IHostedService, IDisposable
+    public class TelegramBotHostedService : IHostedService, IAsyncDisposable
     {
         private readonly ITelegramBotClient _telegramBotClient;
         private readonly ITelegramUpdateHandler _telegramUpdateHandler;
@@ -24,9 +24,9 @@ namespace ProjectB.HostedServices
             await _telegramBotClient.CloseAsync(cancellationToken);
         }
 
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
-            // todo: implement it
+            await new ValueTask(_telegramBotClient.CloseAsync());
         }
     }
 }

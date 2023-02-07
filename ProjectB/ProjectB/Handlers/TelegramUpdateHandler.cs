@@ -5,7 +5,7 @@ namespace ProjectB.Handlers
 {
     public class TelegramUpdateHandler : ITelegramUpdateHandler
     {
-        private IStateFactory _statefactory;
+        private readonly IStateFactory _statefactory;
 
         public TelegramUpdateHandler(IStateFactory statefactory)
         {
@@ -18,8 +18,6 @@ namespace ProjectB.Handlers
             {
                 return;
             }
-
-            var chatId = GetChatId(update);
 
             if (update.Type == UpdateType.Message)
             {
@@ -46,7 +44,7 @@ namespace ProjectB.Handlers
 
             try
             {
-                var handler = update.Type switch
+                _ = update.Type switch
                 {
                     UpdateType.Message => await state.BotOnMessageReceived(botClient, update.Message),
                     UpdateType.CallbackQuery => await state.BotOnCallBackQueryReceived(botClient, update.CallbackQuery),
