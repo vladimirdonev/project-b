@@ -2,7 +2,7 @@
 
 public class CheckInSelectState : IState
 {
-    private ICosmosDbService<UserInformation> _cosmosDbService;
+    private readonly ICosmosDbService<UserInformation> _cosmosDbService;
 
     public CheckInSelectState(ICosmosDbService<UserInformation> cosmosDbService)
     {

@@ -73,7 +73,7 @@ namespace ProjectB.Handlers
         {
             await botClient.SendTextMessageAsync(update.Message.Chat.Id, "Something went wrong! Please try again");
 
-            return await Task.Run(() => State.MainState);
+            return State.MainState;
         }
 
         private async Task<long> GetChatId(Update update)
